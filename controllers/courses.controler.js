@@ -1,4 +1,6 @@
 let {courses} = require("../data/courses.js")
+const express = require("express")
+express().use(express.json())
 
 const getCourses = (req,res) => {
     res.json(courses)

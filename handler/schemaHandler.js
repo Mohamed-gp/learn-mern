@@ -1,8 +1,7 @@
 // create schema 
 const joi= require("joi")
 const express = require("express") 
-const app = express()
-app.use(express.json())
+express().use(express.json())
 
 
 const courseSchema = joi.object(

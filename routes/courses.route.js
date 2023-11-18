@@ -1,5 +1,8 @@
 const express = require("express");
-const {validateCourse} = require("../handler/schemaHandler.js")
+const { validateCourse } = require("../handler/schemaHandler.js")
+const joi = require("joi")
+
+express().use(express.json())
 
 const {addCourse,editCourseById,deleteCourseById,getCourses,getCourseById} = require("../controllers/courses.controler.js")
 
