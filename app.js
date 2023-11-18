@@ -1,40 +1,29 @@
+
+
 const express = require("express")
 const app = express()
+
+app.use(express.json())
+
+
 const PORT = 3000
 
-const corses = [{
-    name: "course1",
-    id : "1",
-    price: "500",
-    discont: "10",
-},{
-    name: "course2",
-    id : "2",
-    price: "5300",
-    discont: "10",
-},{
-    name: "course3",
-    id : "3",
-    price: "200",
-    discont: "12",
-},{
-    name: "course4",
-    id : "3",
-    price: "500",
-    discont: "14",
-},]
 
+const {router} = require("./routes/courses.route") 
 
-app.get("/courses",(req,res) => {
-    res.json(corses)
-})
+// /api/courses => Router
 
-app.get("/courses/:id", (req,res) => {
-    res.json(corses[req.params.id - 1])
-})
+app.use("/api/courses",router)
 
 
 
-app.listen(PORT , () => {
+
+
+
+
+
+
+
+app.listen(PORT, (req,res) => {
     console.log("am listening on port 3000")
-})
+} )
