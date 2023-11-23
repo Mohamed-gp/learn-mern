@@ -1,10 +1,14 @@
-
+require("dotenv").config()
 
 const express = require("express")
 const app = express()
 const mongoose = require("mongoose")
+const { ERROR } = require("./utils/httpStatusCode.js")
+const cors = require("cors")
 
-const url = 'mongodb+srv://mohamedterba6:LrAc7rJqKs2M0RVR@cluster0.w2sdpyk.mongodb.net/learning?retryWrites=true&w=majority';
+app.use(cors())
+
+const url = process.env.MONGO_URL;
 
 mongoose.connect(url).then(() => {
     console.log("mongoos conected")
@@ -14,15 +18,18 @@ const joi = require("joi")
 app.use(express.json())
 
 
-const PORT = 3000
+const PORT = process.env.PORT
 
 
-const {router} = require("./routes/courses.route") 
+const {router} = require("./routes/courses.route"); 
 
 // /api/courses => Router
 
 app.use("/api/courses",router)
 
+app.all("*",(req,res)=> {
+    return res.status(404).json({status : ERROR,data : null})
+})
 
 
 

@@ -12,5 +12,5 @@ const courseSchema = new mongoose.Schema({
     }
 })
 
-// by default mongodb will return the collection name in plural form and in lower case
+// by default mongodb will return the collection name in plural form and in lower case 
 module.exports = mongoose.model("course",courseSchema)
