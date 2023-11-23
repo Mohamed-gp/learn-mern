@@ -1,13 +1,15 @@
-let {courses} = require("../data/courses.js")
 const express = require("express")
+const Course = require("../models/course.model.js")
+
 express().use(express.json())
 
-const getCourses = (req,res) => {
+const getCourses = async (req,res) => {
+    const courses = await Course.find()
     res.json(courses)
 }
 
-const getCourseById = (req,res) => {
-    const course = courses.find((course) => course.id == req.params.id)
+const getCourseById = async (req,res) => {
+    const course = await Course.findById(req.params.id)
     if (course) {
         res.status(200).json(course)
     }
@@ -16,33 +18,29 @@ const getCourseById = (req,res) => {
     }
 }
 
-const addCourse = (req,res) => {
-    const course = {...req.body , id : courses.length + 1} 
+const addCourse = async (req,res) => {
+    const newCourse = new Course(req.body)
+    await newCourse.save()
 
-    courses = [...courses, course]
     // 201 means created successfully
-    res.status(201).json(courses)
+    res.status(201).json(newCourse)
 }
 
-const editCourseById = (req,res) => {
+const editCourseById = async (req,res) => {
     const id = req.params.id
+    let course = await Course.updateOne({_id : id},{$set : req.body})
     
-    let course = courses.find((course) => course.id == id)
-    if(!course){
-        res.status(404).json("not found")
-    }
-    else{
-        course = {...course ,...req.body}
-        res.status(200).json(course)
-    }
+    res.status(200).json(course)
+
 
 
 }
 
-const deleteCourseById = (req,res) => {
+const deleteCourseById = async (req,res) => {
     const id = req.params.id
+    let courses = await Course.find()
     const originalLength = courses.length
-    courses = courses.filter((course) => course.id != id)
+    courses = await Course.deleteOne({_id : id})
     const editedLenght = courses.length
     if (editedLenght == originalLength) {
         res.json("not found")
@@ -62,4 +60,4 @@ module.exports = {
     deleteCourseById,
     getCourses,
     getCourseById,
-  };
+}

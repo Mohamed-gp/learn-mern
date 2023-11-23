@@ -4,7 +4,7 @@ const joi = require("joi")
 
 express().use(express.json())
 
-const {addCourse,editCourseById,deleteCourseById,getCourses,getCourseById} = require("../controllers/courses.controler.js")
+const {getCourses,getCourseById,addCourse,editCourseById,deleteCourseById} = require("../controllers/courses.controler.js")
 
 const router = express.Router();
 
