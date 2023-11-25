@@ -4,7 +4,10 @@ const joi = require("joi")
 
 express().use(express.json())
 
-const {getCourses,getCourseById,addCourse,editCourseById,deleteCourseById} = require("../controllers/courses.controler.js")
+const {getCourses,getCourseById,addCourse,editCourseById,deleteCourseById} = require("../controllers/courses.controler.js");
+const verifyToken = require("../middleware/verifyToken.js");
+const { ADMIN, MODERATOR } = require("../utils/user.roles.js");
+const alowedTo = require("../middleware/alowedTo.js")
 
 const router = express.Router();
 
@@ -16,7 +19,7 @@ router.route("/")
 router.route("/:id")
     .get(getCourseById)
     .patch(editCourseById)
-    .delete(deleteCourseById)
+    .delete(verifyToken,alowedTo(ADMIN,MODERATOR),deleteCourseById)
 
 
 

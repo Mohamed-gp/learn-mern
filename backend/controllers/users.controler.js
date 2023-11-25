@@ -1,5 +1,7 @@
 const express = require("express")
+const jwt = require("jsonwebtoken")
 const bcrypt = require("bcryptjs")
+const generateToken = require("../utils/generateJwt")
 express().use(express.json())
 
 
@@ -17,7 +19,7 @@ const getUsers = async (req,res) => {
 }
 
 const register = async (req,res) => { 
-    const {firstName,lastName,email,password} = req.body
+    const {firstName,lastName,email,password,role} = req.body
     const oldUser = await User.findOne({email: email})
     if(oldUser){
         res.status(404).json({status : FAIL,data : "email already exists"})
@@ -28,12 +30,18 @@ const register = async (req,res) => {
                 firstName,
                 lastName,
                 email,
-                password : hachedPassword
+                password : hachedPassword,
+                role,
+                avatar: req.file.filename
+                
              }
     )
+    // generate token
+    const token = await generateToken({id: newUser._id,email : newUser.email,token : newUser.token,role : newUser.role})
+    newUser.token = token
+
     await newUser.save()
-    
-    res.status(201).json({status : SUCCESS,data : null})
+    res.status(201).json({status : SUCCESS,data : newUser.token})
 }
 
 }
@@ -42,7 +50,6 @@ const login = async (req,res) => {
     const {email , password} = req.body
 
     const oldUser = await User.findOne({email : email})
-    console.log(oldUser)
 
     if (!oldUser) {
         return res.status(404).json({status : FAIL,data : "user not found"})
@@ -50,7 +57,8 @@ const login = async (req,res) => {
     else{
         const matchedPassword = await bcrypt.compare(password,oldUser.password)
         if (matchedPassword) {
-            res.status(200).json({status : SUCCESS,data : null})
+            const token = await generateToken({email : oldUser.email,id: oldUser._id,token : oldUser.token,role : oldUser.role})
+            res.status(200).json({status : SUCCESS,data : {token}})
         }
         else{
             res.status(400).json({status : FAIL,data : "wrong password"})

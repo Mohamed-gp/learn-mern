@@ -2,12 +2,16 @@ require("dotenv").config()
 
 const express = require("express")
 const app = express()
+const path = require("node:path") // make you join between routes and files
 const mongoose = require("mongoose")
 const { ERROR } = require("./utils/httpStatusCode.js")
 // to be able for the front end to connect fromw differnt domain without any problem but you can get it in postman without it
 const cors = require("cors")
-
+// to make easily connect to the api with frontend  
 app.use(cors())
+
+// to use static files like images we say that make /uploads as a static folder we use join becuase it works on all operating systems linux / and windows \ so any photo in uploads will work with this use(middleware)
+app.use("/uploads",express.static(path.join(__dirname,"uploads")))
 
 const url = process.env.MONGO_URL;
 
