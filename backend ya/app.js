@@ -1,6 +1,7 @@
 const express = require("express")
 const booksrouter = require("./routes/books")
 const authorsrouter = require("./routes/authors")
+const usersrouter = require("./routes/users")
 const dotenv = require("dotenv")
 dotenv.config()
 
@@ -30,6 +31,9 @@ app.use("/api/books",booksrouter)
 // authors route
 
 app.use("/api/authors", authorsrouter)
+
+// users route 
+app.use("/api/users",usersrouter)
 
 // error handler 
 app.use(notFound)
