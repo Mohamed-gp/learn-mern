@@ -50,7 +50,6 @@ const validateloginschema = (obj) => {
 const validateregisterschema = (obj) => {
     const schema = joi.object({
         username : joi.string().trim().min(5).max(100).required(),
-        isAdmin : joi.boolean().default(false),
         email : joi.string().trim().min(5).max(100).required(),
         password : joi.string().trim().min(5).max(100).required(),
     })
@@ -62,10 +61,46 @@ const validateregisterschema = (obj) => {
 
 
 
+
+
+
+
+
+const validateUpdateUser = (obj) => {
+    const Schema = joi.object({
+        username : joi.string().trim().min(5).max(100),
+        isAdmin : joi.boolean().default(false),
+        email : joi.string().trim().min(5).max(100),
+        password : joi.string().trim().min(5).max(100),
+    })
+
+    return Schema.validate(obj)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 module.exports = {
     User,
     validateloginschema,
-    validateregisterschema
+    validateregisterschema,
+    validateUpdateUser
     
 }
 

@@ -1,7 +1,8 @@
 const express = require("express")
 const booksrouter = require("./routes/books")
 const authorsrouter = require("./routes/authors")
-const usersrouter = require("./routes/users")
+const usersrouter = require("./routes/users.js")
+const authrouter = require("./routes/auth.js")
 const dotenv = require("dotenv")
 dotenv.config()
 
@@ -32,7 +33,11 @@ app.use("/api/books",booksrouter)
 
 app.use("/api/authors", authorsrouter)
 
-// users route 
+// auth route 
+app.use("/api/auth",authrouter)
+
+
+// users route
 app.use("/api/users",usersrouter)
 
 // error handler 
