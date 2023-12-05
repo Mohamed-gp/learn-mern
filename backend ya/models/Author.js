@@ -22,7 +22,7 @@ const AuthorSchema = new mongoose.Schema({
         type : String,
         required : true,
         trim : true,
-        minlength : 4,
+        minlength : 2,
         maxlenght : 100
     },
     age : {
@@ -47,7 +47,7 @@ const validateauthor = (obj) => {
     const schema = joi.object({
         firstName : joi.string().trim().min(4).max(100).required(),
         lastName : joi.string().trim().min(4).max(100).required(),
-        nationality : joi.string().trim().min(4).max(100).required(),
+        nationality : joi.string().trim().min(2).max(100).required(),
         age : joi.number().min(2),
         image : joi.string().default("default-avatar.png")
     })

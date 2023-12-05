@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 const joi = require("joi")
+const jwt = require("jsonwebtoken")
 
 
 const UserSchema = new mongoose.Schema({
@@ -35,8 +36,14 @@ const UserSchema = new mongoose.Schema({
 
 },{timestamps : true})
 
+UserSchema.methods.generateToken =function () {
+    return jwt.sign({isAdmin: this.isAdmin,id : this._id},process.env.JWT_SECTET_KEY,{expiresIn : "3d"})
+}
 
 const User = mongoose.model("user",UserSchema)
+
+
+
 
 const validateloginschema = (obj) => {
     const schema = joi.object({

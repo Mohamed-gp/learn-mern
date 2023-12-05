@@ -33,11 +33,13 @@ const verifyTokenAndAuthorization = (req,res,next) => {
 const verifyTokenAndAuthorizationAdmin = (req,res,next) => {
     verifyToken(req,res,() => {
         if (req.user.isAdmin) {
+            
             next()
         }
         else{
             return res.status(403).json("you are not admin")
         }
+        console.log(req.user.isAdmin)
     })
 }
 

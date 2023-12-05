@@ -1,19 +1,11 @@
 const express = require("express")
-const booksrouter = require("./routes/books")
-const authorsrouter = require("./routes/authors")
-const usersrouter = require("./routes/users.js")
-const authrouter = require("./routes/auth.js")
-const dotenv = require("dotenv")
-dotenv.config()
-
-const mongoose = require("mongoose")
 const logger = require("./middlewares/logger")
 const {errorHandler,notFound} = require("./middlewares/errorHandler") 
+const connectDB = require("./config/db.js")
+require("dotenv").config()
 
 
-mongoose.connect(process.env.MONGO_URI)
-.then(() => {console.log("connected succsefully")})
-.catch(err => console.log(err))
+connectDB()
 
 
 const app = express()
@@ -28,17 +20,20 @@ app.get("/",(req,res) => {
 
 
 // books route
-app.use("/api/books",booksrouter)
+app.use("/api/books",require("./routes/books"))
 // authors route
 
-app.use("/api/authors", authorsrouter)
+app.use("/api/authors", require("./routes/authors"))
 
 // auth route 
-app.use("/api/auth",authrouter)
+app.use("/api/auth",require("./routes/auth.js"))
 
 
 // users route
-app.use("/api/users",usersrouter)
+app.use("/api/users",require("./routes/users.js"))
+
+// passwrod is not an api
+app.use("/password",require("./routes/password.js"))
 
 // error handler 
 app.use(notFound)
